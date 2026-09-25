@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Demo LLM Chat API (A2D mock upstream for C3)
+  version: 1.0.0
+  description: >-
+    A minimal OpenAI-compatible chat-completions endpoint used as the mocked
+    upstream behind the Flex Gateway route that the EU AI Act Use-Case Risk
+    Tagging policy governs. The mock echoes the x-jev-ai-act-risk header the
+    policy injects so the demo can show the tag the upstream would receive.
+paths:
+  /v1/chat/completions:
+    post:
+      operationId: createChatCompletion
+      summary: Create a chat completion (mock)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model: { type: string }
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role: { type: string }
+                      content: {}
+      responses:
+        "200":
+          description: A mock chat completion. The mock is configured to reflect the received x-jev-ai-act-risk request header into the body so the injected tag is visible.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  object: { type: string }
+                  received_risk_tag:
+                    type: string
+                    description: The x-jev-ai-act-risk header the gateway injected (echoed by the mock).
+                  choices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: object
+                          properties:
+                            role: { type: string }
+                            content: { type: string }

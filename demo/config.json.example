@@ -1,0 +1,18 @@
+{
+  "mode": "enforce",
+  "failMode": "open",
+  "jevProvider": "mock",
+  "allowMock": true,
+  "jevService": "https://example.invalid",
+  "sampleRate": 1.0,
+  "onProhibited": "block",
+  "onHighRisk": "require_registration",
+  "registeredUseCases": ["hr-screening-2026"],
+  "useCaseHeader": "x-ai-use-case-id",
+  "riskHeader": "x-jev-ai-act-risk",
+  "clientIdHeader": "x-client-id",
+  "minConfidence": 0.6,
+  "prohibitedConfidence": 0.8,
+  "affectsIndividualThreshold": 0.7,
+  "logStateSample": false
+}

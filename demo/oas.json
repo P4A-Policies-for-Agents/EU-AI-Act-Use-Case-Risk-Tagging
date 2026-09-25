@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "EU AI Act Risk Tagging Demo LLM API",
+    "description": "A minimal OpenAI-compatible chat-completions mock upstream used to demo the C3 EU AI Act Use-Case Risk Tagging Flex Gateway policy. The mock echoes the x-jev-ai-act-risk header the policy injects into the request into a received_risk_tag field in the response body, so the injected tag is visible in the demo. Provider: P4A Policies for Agents (https://github.com/P4A-Policies-for-Agents).",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.a2d-ai.com/api/platform/<A2D_MOCK_SERVER_ID>/api",
+      "description": "A2D platform mock endpoint (draft)"
+    }
+  ],
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "operationId": "createChatCompletion",
+        "summary": "Create a chat completion (mock)",
+        "description": "Accepts an OpenAI-compatible chat-completions request. The governing C3 gateway policy classifies the EU AI Act risk band of the use case declared in the system prompt / last user message before this endpoint is ever called, injecting x-jev-ai-act-risk upstream (or denying with 403 for prohibited/unregistered high-risk uses). This mock echoes the received tag into received_risk_tag.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": { "type": "string" },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": { "type": "string" },
+                        "content": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A mock chat completion. Reflects the received x-jev-ai-act-risk request header into the body so the injected tag is visible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "object": { "type": "string" },
+                    "received_risk_tag": {
+                      "type": "string",
+                      "description": "The x-jev-ai-act-risk header the gateway injected (echoed by the mock)."
+                    },
+                    "choices": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "message": {
+                            "type": "object",
+                            "properties": {
+                              "role": { "type": "string" },
+                              "content": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

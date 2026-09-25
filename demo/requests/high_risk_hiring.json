@@ -1,0 +1,7 @@
+{
+  "model": "gpt-4o-mini",
+  "messages": [
+    { "role": "system", "content": "You are a hiring-decision assistant for the recruiting team. Given a list of job applicants, rank them and recommend who to hire." },
+    { "role": "user", "content": "Here are five candidates for the backend engineer role. Rank them and tell us who to hire." }
+  ]
+}
